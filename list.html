@@ -9,10 +9,17 @@
   <div class="btn btn-primary" ng-click="addTicket()">Create new ticket</div>
   <br />
   <h4>Tickets</h4>
+  <span>Action:
+    <select>
+      <option>Delete</option>
+      <option>Toggle done</option>
+    </select>
+    <div class="btn">OK</div>
+  </span>
   <br />
   <table class="table">
     <thead>
-      <th>ID</th>
+      <th>Select</th>
       <th>Title</th>
       <th>Brief description</th>
       <th>Created</th>
@@ -20,7 +27,7 @@
     </thead>
     <tbody>
       <tr ng-repeat="ticket in getTickets() | orderBy:'createdTimestamp'">
-        <td>{{ticket.id}}</td>
+        <td><input type="checkbox" id="{{ticket.id}}"></input></td>
         <td>{{ticket.title}}</td>
         <td>{{ticket.description}}</td>
         <td>{{ticket.createdTimestamp}}</td>
