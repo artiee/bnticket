@@ -1,0 +1,31 @@
+<div>
+  <h4>Requester</h4>
+  <input id="newTicketRequester" type="text">
+  <h4>Ticket title</h4>
+  <input id="newTicketTitle" type="text">
+  <h4>Description</h4>
+  <textarea id="newTicketDescription" rows="7"></textarea>
+  <br /><br />
+  <div class="btn btn-primary" ng-click="addTicket()">Create new ticket</div>
+  <br />
+  <h4>Tickets</h4>
+  <br />
+  <table class="table">
+    <thead>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Brief description</th>
+      <th>Created</th>
+      <th>Requester</th>
+    </thead>
+    <tbody>
+      <tr ng-repeat="ticket in getTickets() | orderBy:'createdTimestamp'">
+        <td>{{ticket.id}}</td>
+        <td>{{ticket.title}}</td>
+        <td>{{ticket.description}}</td>
+        <td>{{ticket.createdTimestamp}}</td>
+        <td>{{ticket.requester}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
