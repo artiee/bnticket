@@ -1,38 +1,72 @@
-<div>
-  <h4>Requester</h4>
-  <input id="newTicketRequester" type="text">
-  <h4>Ticket title</h4>
-  <input id="newTicketTitle" type="text">
-  <h4>Description</h4>
-  <textarea id="newTicketDescription" rows="7"></textarea>
-  <br /><br />
-  <div class="btn btn-primary" ng-click="addTicket()">Create new ticket</div>
-  <br />
-  <h4>Tickets</h4>
-  <span>Action:
-    <select>
-      <option>Delete</option>
-      <option>Toggle done</option>
-    </select>
-    <div class="btn">OK</div>
-  </span>
-  <br />
-  <table class="table">
-    <thead>
-      <th>Select</th>
-      <th>Title</th>
-      <th>Brief description</th>
-      <th>Created</th>
-      <th>Requester</th>
-    </thead>
-    <tbody>
-      <tr ng-repeat="ticket in getTickets() | orderBy:'createdTimestamp'">
-        <td><input type="checkbox" id="{{ticket.id}}"></input></td>
-        <td>{{ticket.title}}</td>
-        <td>{{ticket.description}}</td>
-        <td>{{ticket.createdTimestamp}}</td>
-        <td>{{ticket.requester}}</td>
-      </tr>
-    </tbody>
-  </table>
+<div class="row">
+
+  <div class="col-md-3 new-ticket">
+    <div style="padding-left: 10px; padding-bottom: 10px;">
+      <h4>Requester</h4>
+      <input id="newTicketRequester" type="text">
+      <h4>Ticket title</h4>
+      <input id="newTicketTitle" type="text">
+      <h4>Description</h4>
+      <textarea id="newTicketDescription" rows="7"></textarea>
+      <br /><br />
+      <div class="btn btn-primary" ng-click="addTicket()">Create new ticket</div>
+    </div>
+    
+    <div ng-controller="LogController">
+      <h4>Log</h4>
+      <table class="table">
+        <thead>
+          <th>User</th>
+          <th>Ticket</th>
+          <th>Title</th>
+          <th>Action</th>
+          <th>Time</th>
+        </thead>
+        <tbody>
+          <tr id="{{log.id}}_row" ng-repeat="log in getLogEntries() | orderBy:'timestamp'" style="font-size: 0.8em;">
+            <td>{{log.userID}}</td>
+            <td style="max-width: 10px; overflow: hidden;">{{log.ticketID}}</td>
+            <td>{{log.title}}</td>
+            <td>{{log.action}}</td>
+            <td>{{log.timestamp}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+  </div>
+
+  <div class="col-md-9">
+    <h4>Tickets</h4>
+    <span>Action:
+      <select id="actionSelect">
+        <option value="0">Delete</option>
+        <option value="1">Toggle done</option>
+      </select>
+      <div class="btn bnt-default" ng-click="handleAction()">OK</div>
+    </span>
+    <br />
+    <table class="table">
+      <thead>
+        <th></th>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Brief description</th>
+        <th>Created</th>
+        <th>Requester</th>
+        <th>Status</th>
+      </thead>
+      <tbody>
+        <tr id="{{ticket.id}}_row" ng-repeat="ticket in getTickets() | orderBy:'createdTimestamp'" class="ticket-{{ticket.status}}">
+          <td><input type="checkbox" id="{{ticket.id}}"></input></td>
+          <td>{{ticket.id}}</td>
+          <td>{{ticket.title}}</td>
+          <td>{{ticket.description}}</td>
+          <td>{{ticket.createdTimestamp}}</td>
+          <td>{{ticket.requester}}</td>
+          <td>{{ticket.status}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </div>

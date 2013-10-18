@@ -5,3 +5,11 @@ body {
 h1 {
     color: blue;
 }
+
+.new-ticket {
+  border: 1px solid gray;
+}
+
+.ticket-closed {
+  text-decoration: line-through;
+}
