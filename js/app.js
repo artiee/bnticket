@@ -3,6 +3,7 @@ var bnticketsModule = angular.module('bntickets', []).
     function($routeProvider) {
       $routeProvider.
         when('/', {controller:TicketsController, templateUrl:'list.html'}).
+        when('/details/:ticketID', {controller:TicketDetailsController, templateUrl:'details.html'}).
         otherwise({redirectTo:'/'});
     }
   );
@@ -223,6 +224,25 @@ function TicketsController($scope, pubsubService) {
       this.$apply(fn);
     }
   };
+}
+
+// The first problem: I'm keeping tickets on another controller.
+// Should they be on rootScope or what?
+// Firebase ticket could be referred as a location also?
+// Comparing to Backbone, in backbone we also fetch the collection for the view..
+// So in this contrast, it wouldn't be that different. We could summon the ticket
+// from Firebase just using it's ID. Then we are ready to render it.
+function TicketDetailsController($scope, pubsubService, $routeParams) {
+  var ticketID = $routeParams.ticketID;
+  var ticketRef = new Firebase('https://bnfirebase.firebaseio.com/tickets/' + ticketID);
+
+  console.log("Reading ticket: " + ticketID);
+
+  ticketRef.on('value', function(snapshot) {
+    var ticket = snapshot.val();
+    console.log(ticket);
+  });
+
 }
 
 LogController.$inject = ['$scope', 'pubsubService'];
