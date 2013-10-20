@@ -226,23 +226,31 @@ function TicketsController($scope, pubsubService) {
   };
 }
 
-// The first problem: I'm keeping tickets on another controller.
-// Should they be on rootScope or what?
-// Firebase ticket could be referred as a location also?
-// Comparing to Backbone, in backbone we also fetch the collection for the view..
-// So in this contrast, it wouldn't be that different. We could summon the ticket
-// from Firebase just using it's ID. Then we are ready to render it.
 function TicketDetailsController($scope, pubsubService, $routeParams) {
   var ticketID = $routeParams.ticketID;
   var ticketRef = new Firebase('https://bnfirebase.firebaseio.com/tickets/' + ticketID);
 
   console.log("Reading ticket: " + ticketID);
 
+  $scope.ticket = null;
+
   ticketRef.on('value', function(snapshot) {
-    var ticket = snapshot.val();
-    console.log(ticket);
+    $scope.ticket = snapshot.val();
+    $scope.ticket.id = snapshot.name();
+    console.log($scope.ticket);
+    $scope.safeApply();
   });
 
+  $scope.safeApply = function(fn) {
+    var phase = this.$root.$$phase;
+    if (phase == '$apply' || phase == '$digest') {
+      if (fn && (typeof(fn) === 'function')) {
+        fn();
+      }
+    } else {
+      this.$apply(fn);
+    }
+  };
 }
 
 LogController.$inject = ['$scope', 'pubsubService'];

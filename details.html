@@ -7,6 +7,25 @@
 
   <div class="col-md-9">
     <h4>Ticket details</h4>
-    <p>TODO...</p>
+    <table class="table">
+      <thead>
+        <th>ID</th>
+        <th>Created</th>
+        <th>Requester</th>
+        <th>Status</th>
+      </thead>
+      <tbody>
+        <tr>
+          <td>{{ticket.id}}</td>
+          <td>{{ticket.createdTimestamp}}</td>
+          <td>{{ticket.requester}}</td>
+          <td>{{ticket.status}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <h4>Title: {{ticket.title}}</h4>
+    <h4>Desription</h4>
+    <textarea rows="7" style="width: 100%;">{{ticket.description}}</textarea>
+    <span id="save" class="btn btn-primary">Save</span>
   </div>
 </div>
