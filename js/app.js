@@ -3,7 +3,8 @@ var bnticketsModule = angular.module('bntickets', []).
     function($routeProvider) {
       $routeProvider.
         when('/', {controller:TicketsController, templateUrl:'frontpage.html'}).
-        when('/details/:ticketID', {controller:TicketDetailsController, templateUrl:'details.html'}).
+        when('/ticket/:ticketID/details', {controller:TicketDetailsController, templateUrl:'details.html'}).
+        when('/ticket/:ticketID/worklog', {controller:WorkLogController, templateUrl:'worklog.html'}).
         otherwise({redirectTo:'/'});
     }
   );
@@ -87,6 +88,7 @@ function TicketsController($scope, pubsubService) {
   ticketsRef.on('child_added', function(snapshot) {
     var value = snapshot.val();
     value.id = snapshot.name();
+    value.briefDescription = value.description.substring(0,255);
     $scope.myTickets.push( value );
 // BUGBUG: nyt valittaa tästäkin. Tätä ennen tehty refaktorointi, jossa näkymät
 //         includataan ja niille annetaan kontrolleri. Se jotenkin sotkee tämän...
@@ -270,5 +272,58 @@ function TicketDetailsController($scope, pubsubService, $routeParams) {
   };
 }
 
+function WorkLogController($scope, pubsubService, $routeParams) {
+  var ticketID = $routeParams.ticketID;
+  var worklogRef = new Firebase('https://bnfirebase.firebaseio.com/tickets/' + ticketID + '/worklog');
+
+  console.log("Reading work-log for ticket: " + ticketID);
+
+  $scope.workLogEntries = [];
+
+  $scope.getTicketID = function() {
+    return ticketID;
+  }
+
+  $scope.getWorkLogEntries = function() {
+    return $scope.workLogEntries;
+  }
+  
+  worklogRef.on('child_added', function(snapshot) {
+    var worklogEntry = snapshot.val();
+    worklogEntry.id = snapshot.name();
+    $scope.workLogEntries.push(worklogEntry);
+    // Clear the description-textarea:
+    $("#description").val('');
+    console.log($scope.worklogEntry);
+    $scope.safeApply();
+  });
+
+  // this is called when worklog entry is updated
+  worklogRef.on('child_changed', function(snapshot) {
+    console.log('changes saved.');
+  });
+
+  $scope.addWorkLog = function() {
+    var description = $("#description").val();
+    console.log('Adding new work log entry');
+    // TODO: get the user id from logged in user, when available
+    worklogRef.push({userID: 'TP', description: description, timestamp: (new Date()).toGMTString()});
+  }
+
+  $scope.safeApply = function(fn) {
+    var phase = this.$root.$$phase;
+    if (phase == '$apply' || phase == '$digest') {
+      if (fn && (typeof(fn) === 'function')) {
+        fn();
+      }
+    } else {
+      this.$apply(fn);
+    }
+  };
+
+}
+
 LogController.$inject = ['$scope', 'pubsubService'];
 TicketsController.$inject = ['$scope', 'pubsubService'];
+// Note: all params are injected
+WorkLogController.$inject = ['$scope', 'pubsubService', '$routeParams'];

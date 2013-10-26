@@ -1,0 +1,43 @@
+<div class="row">
+
+  <div ng-include="" src=" 'newTicket.html' " ng-controller="TicketsController"></div>
+
+  <span style="margin-left: 13px;"><a href="./index.html#/" class="glyphicon glyphicon-chevron-left"> Back to tickets list</a></span>
+
+  <div class="col-md-9">
+
+    <ul class="nav nav-tabs">
+      <li><a href="./index.html#/ticket/{{getTicketID()}}/details">Ticket details</a></li>
+      <li class="active"><a href="./index.html#/ticket/getTicketID()/worklog">Work log</a></li>
+    </ul>
+
+    <h4>Description</h4>
+    <textarea id="description" rows="7" style="width: 100%;"></textarea>
+    <br />
+    <span id="save" class="btn btn-primary" ng-click="addWorkLog()"><span class=".glyphicon .glyphicon-plus"></span>Add to work log</span>
+
+    <div ng-controller="WorkLogController">
+      <h4>Work log entries</h4>
+      <table class="table">
+        <thead>
+          <th>User</th>
+          <th>Description</th>
+          <th>Time</th>
+          <th>Actions</th>
+        </thead>
+        <tbody>
+          <tr id="{{worklog.id}}_row" ng-repeat="worklog in getWorkLogEntries() | orderBy:'timestamp'" style="min-height: 100px; border: 1px solid #ddd;">
+            <td>{{worklog.userID}}</td>
+            <td style="background: #dddddd; width: 65%;">{{worklog.description}}</td>
+            <td>{{worklog.timestamp}}</td>
+            <td>
+              <span id="{{worklog.id}}_edit" class=".glyphicon .glyphicon-pencil">Edit</span>
+              <span id="{{worklog.id}}_remove" class=".glyphicon .glyphicon-remove">Remove</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

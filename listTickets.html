@@ -22,8 +22,8 @@
         <tr id="{{ticket.id}}_row" ng-repeat="ticket in getTickets() | orderBy:'createdTimestamp'" class="ticket-{{ticket.status}}">
           <td><input type="checkbox" id="{{ticket.id}}"></input></td>
           <td>{{ticket.id}}</td>
-          <td><a href="./index.html#/details/{{ticket.id}}">{{ticket.title}}</a></td>
-          <td>{{ticket.description}}</td>
+          <td><a href="./index.html#/ticket/{{ticket.id}}/details">{{ticket.title}}</a></td>
+          <td>{{ticket.briefDescription}}</td>
           <td>{{ticket.createdTimestamp}}</td>
           <td>{{ticket.requester}}</td>
           <td>{{ticket.status}}</td>

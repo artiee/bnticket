@@ -5,7 +5,12 @@
   <span style="margin-left: 13px;"><a href="./index.html#/" class="glyphicon glyphicon-chevron-left"> Back to tickets list</a></span>
 
   <div class="col-md-9">
-    <h4>Ticket details</h4>
+
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#">Ticket details</a></li>
+      <li><a href="./index.html#/ticket/{{ticket.id}}/worklog">Work log</a></li>
+    </ul>
+
     <table class="table">
       <thead>
         <th>ID</th>
@@ -25,6 +30,7 @@
     <h4>Title: <input id="title" type="text" value="{{ticket.title}}"></input></h4>
     <h4>Desription</h4>
     <textarea id="description" rows="7" style="width: 100%;">{{ticket.description}}</textarea>
+    <br />
     <span id="save" class="btn btn-primary" ng-click="save()">Save changes</span>
   </div>
 </div>
