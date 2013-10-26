@@ -2,7 +2,7 @@ var bnticketsModule = angular.module('bntickets', []).
   config(
     function($routeProvider) {
       $routeProvider.
-        when('/', {controller:TicketsController, templateUrl:'list.html'}).
+        when('/', {controller:TicketsController, templateUrl:'frontpage.html'}).
         when('/details/:ticketID', {controller:TicketDetailsController, templateUrl:'details.html'}).
         otherwise({redirectTo:'/'});
     }
@@ -88,7 +88,9 @@ function TicketsController($scope, pubsubService) {
     var value = snapshot.val();
     value.id = snapshot.name();
     $scope.myTickets.push( value );
-    $scope.safeApply(); // for async callback, the angular bindings must be manually triggered, and safeApply checks that angular's internal state is ok for this
+// BUGBUG: nyt valittaa tästäkin. Tätä ennen tehty refaktorointi, jossa näkymät
+//         includataan ja niille annetaan kontrolleri. Se jotenkin sotkee tämän...
+//    $scope.safeApply(); // for async callback, the angular bindings must be manually triggered, and safeApply checks that angular's internal state is ok for this
     // Clear the input forms:
     $('#newTicketTitle').val('');
     $('#newTicketDescription').val('');
@@ -238,8 +240,23 @@ function TicketDetailsController($scope, pubsubService, $routeParams) {
     $scope.ticket = snapshot.val();
     $scope.ticket.id = snapshot.name();
     console.log($scope.ticket);
-    $scope.safeApply();
+    //$scope.safeApply();
   });
+
+  ticketRef.on('child_changed', function(snapshot) {
+    $scope.ticket = snapshot.val();
+    $scope.ticket.id = snapshot.name();
+    console.log('Changes saves.');
+    alert("Changes saved");
+  });
+
+  // Saves the edited ticket
+  $scope.save = function() {
+    var title = $("#title").val();
+    var description = $("#description").val();
+    console.log('Saving: ' + title);
+    ticketRef.update({title: title, description: description});
+  }
 
   $scope.safeApply = function(fn) {
     var phase = this.$root.$$phase;

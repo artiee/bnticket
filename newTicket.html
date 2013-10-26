@@ -1,5 +1,3 @@
-<div class="row">
-
   <div class="col-md-3 new-ticket">
     <div style="padding-bottom: 10px;">
       <h4>Requester</h4>
@@ -33,40 +31,4 @@
         </tbody>
       </table>
     </div>
-    
   </div>
-
-  <div class="col-md-9">
-    <h4>Tickets</h4>
-    <span>Action:
-      <select id="actionSelect">
-        <option value="0">Delete</option>
-        <option value="1">Toggle done</option>
-      </select>
-      <div class="btn bnt-default" ng-click="handleAction()">OK</div>
-    </span>
-    <br />
-    <table class="table">
-      <thead>
-        <th></th>
-        <th>ID</th>
-        <th>Title</th>
-        <th>Brief description</th>
-        <th>Created</th>
-        <th>Requester</th>
-        <th>Status</th>
-      </thead>
-      <tbody>
-        <tr id="{{ticket.id}}_row" ng-repeat="ticket in getTickets() | orderBy:'createdTimestamp'" class="ticket-{{ticket.status}}">
-          <td><input type="checkbox" id="{{ticket.id}}"></input></td>
-          <td>{{ticket.id}}</td>
-          <td><a href="./index.html#/details/{{ticket.id}}">{{ticket.title}}</a></td>
-          <td>{{ticket.description}}</td>
-          <td>{{ticket.createdTimestamp}}</td>
-          <td>{{ticket.requester}}</td>
-          <td>{{ticket.status}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>

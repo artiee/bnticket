@@ -1,9 +1,8 @@
 <div class="row">
 
-  <div class="col-md-3 new-ticket">
-    <p>OK. Maybe this section should have own template.
-       I don't want to copy this piece of html all over the templates.</p>
-  </div>
+  <div ng-include="" src=" 'newTicket.html' " ng-controller="TicketsController"></div>
+
+  <span style="margin-left: 13px;"><a href="./index.html#/" class="glyphicon glyphicon-chevron-left"> Back to tickets list</a></span>
 
   <div class="col-md-9">
     <h4>Ticket details</h4>
@@ -23,9 +22,9 @@
         </tr>
       </tbody>
     </table>
-    <h4>Title: {{ticket.title}}</h4>
+    <h4>Title: <input id="title" type="text" value="{{ticket.title}}"></input></h4>
     <h4>Desription</h4>
-    <textarea rows="7" style="width: 100%;">{{ticket.description}}</textarea>
-    <span id="save" class="btn btn-primary">Save</span>
+    <textarea id="description" rows="7" style="width: 100%;">{{ticket.description}}</textarea>
+    <span id="save" class="btn btn-primary" ng-click="save()">Save changes</span>
   </div>
 </div>
